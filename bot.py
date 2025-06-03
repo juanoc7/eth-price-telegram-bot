@@ -11,8 +11,6 @@ def get_eth_price():
     url = "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT"
     response = requests.get(url)
     data = response.json()
-
-    # Protección contra errores
     if 'price' in data:
         return float(data['price'])
     else:
@@ -33,6 +31,7 @@ def job():
     send_telegram_message(bot, message)
 
 schedule.every(1).minutes.do(job)
+job()  # Envía mensaje apenas inicia
 
 while True:
     schedule.run_pending()
