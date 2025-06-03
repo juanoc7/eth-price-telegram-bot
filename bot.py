@@ -11,11 +11,13 @@ def get_eth_price():
     url = "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT"
     response = requests.get(url)
     data = response.json()
-    
+
+    # Protección contra errores
     if 'price' in data:
         return float(data['price'])
     else:
-        return None  # Algo salió mal
+        print("❌ ERROR en la respuesta de Binance:", data)
+        return None
 
 def send_telegram_message(bot, message):
     bot.send_message(chat_id=CHAT_ID, text=message)
@@ -27,7 +29,7 @@ def job():
     if price:
         message = f"💰 El precio actual de ETH/USDT es: {price} USD"
     else:
-        message = "⚠️ Error al obtener el precio de ETH. Binance no respondió correctamente."
+        message = "⚠️ No se pudo obtener el precio de ETH. Binance no respondió correctamente."
     send_telegram_message(bot, message)
 
 schedule.every(1).minutes.do(job)
