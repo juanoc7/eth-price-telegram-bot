@@ -23,7 +23,7 @@ def job():
     message = f"💰 El precio actual de ETH/USDT es: {price} USD"
     send_telegram_message(bot, message)
 
-schedule.every().hour.do(job)
+schedule.every(1).minutes.do(job)
 
 while True:
     schedule.run_pending()
