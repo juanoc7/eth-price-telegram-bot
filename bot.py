@@ -9,18 +9,20 @@ CHAT_ID = os.getenv("CHAT_ID")
 
 def get_eth_price():
     url = "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT"
-    response = requests.get(url)
     try:
+        response = requests.get(url)
         data = response.json()
     except Exception as e:
-        print(f"❌ Error al parsear respuesta de Binance: {e}")
+        print("❌ Error al hacer request o parsear JSON:", e)
         return None
+
+    print("📦 Respuesta completa de Binance:", data)  # <--- NUEVO LOG
 
     if 'price' in data:
         return float(data['price'])
     else:
-        print("❌ Binance devolvió:", data)
         return None
+
 
 def send_telegram_message(bot, message):
     bot.send_message(chat_id=CHAT_ID, text=message)
